@@ -1,5 +1,6 @@
 # kubernetes
 
+---
 
 # WordCount & PageRank with PySpark on Google Cloud's Kubernetes
 
@@ -46,35 +47,35 @@ The algorithm's steps are as follows:
 
 1. **Cloud Shell Activation & GCP Authentication:**
     ```bash
-    gcloud auth login
+    $ gcloud auth login
     ```
 
 2. **Helm Configuration:**
     ```bash
-    helm repo add stable https://charts.helm.sh/stable
-    helm install nfs stable/nfs-server-provisioner \
+    $ helm repo add stable https://charts.helm.sh/stable
+    $ helm install nfs stable/nfs-server-provisioner \
         --set persistence.enabled=true,persistence.size=5Gi
     ```
 
 3. **Set Up PersistentVolumeClaim (PVC):**
     ```bash
-    vim spark-pvc.yaml # Create or edit the YAML file.
-    kubectl apply -f spark-pvc.yaml
+    $ vim spark-pvc.yaml # Create or edit the YAML file.
+    $ kubectl apply -f spark-pvc.yaml
     ```
 
 4. **Prepare Spark JAR & Test File:**
     ```bash
-    docker run -v /tmp:/tmp -it bitnami/spark -- find /opt/bitnami/spark/examples/jars/ -name spark-examples* -exec cp {} /tmp/my.jar \;
-    echo "how much wood could a woodpecker chuck if a woodpecker could chuck wood" > /tmp/test.txt
-    kubectl cp /tmp/my.jar spark-data-pod:/data/my.jar
-    kubectl cp /tmp/test.txt spark-data-pod:/data/test.txt
+    $ docker run -v /tmp:/tmp -it bitnami/spark -- find /opt/bitnami/spark/examples/jars/ -name spark-examples* -exec cp {} /tmp/my.jar \;
+    $ echo "how much wood could a woodpecker chuck if a woodpecker could chuck wood" > /tmp/test.txt
+    $ kubectl cp /tmp/my.jar spark-data-pod:/data/my.jar
+    $ kubectl cp /tmp/test.txt spark-data-pod:/data/test.txt
     ```
 
 5. **Spark Deployment:**
     ```bash
-    vim spark-chart.yaml # Create or edit the YAML file.
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm install spark bitnami/spark -f spark-chart.yaml
+    $ vim spark-chart.yaml # Create or edit the YAML file.
+    $ helm repo add bitnami https://charts.bitnami.com/bitnami
+    $ helm install spark bitnami/spark -f spark-chart.yaml
     ```
 
 ## Implementation
@@ -84,7 +85,7 @@ The algorithm's steps are as follows:
 1. **Job Submission:**
     Replace `<SPARK_MASTER_IP>` with your Spark master IP.
     ```bash
-    kubectl run --namespace default spark-client --rm --tty -i --restart='Never' \
+    $ kubectl run --namespace default spark-client --rm --tty -i --restart='Never' \
         --image docker.io/bitnami/spark:3.4.1-debian-11-r3 \
         -- spark-submit --master spark://<SPARK_MASTER_IP>:7077 \
         --deploy-mode cluster \
@@ -95,19 +96,19 @@ The algorithm's steps are as follows:
 2. **View Output:**
     Replace `<SPARK_WORKER_IP>` and `<Submission ID>` accordingly.
     ```bash
-    kubectl get pods -o wide | grep <SPARK_WORKER_IP>
-    kubectl exec -it spark-worker-1 -- bash
-    cd /opt/bitnami/spark/work
-    cat <Submission ID>/stdout
+    $ kubectl get pods -o wide | grep <SPARK_WORKER_IP>
+    $ kubectl exec -it spark-worker-1 -- bash
+    $ cd /opt/bitnami/spark/work
+    $ cat <Submission ID>/stdout
     ```
 
 ### PageRank:
 
 1. **Job Submission:**
     ```bash
-    kubectl exec -it spark-master-0 -- bash
-    cd /opt/bitnami/spark/examples/src/main/python
-    spark-submit pagerank.py /opt 2
+    $ kubectl exec -it spark-master-0 -- bash
+    $ cd /opt/bitnami/spark/examples/src/main/python
+    $ spark-submit pagerank.py /opt 2
     ```
 
 ## Output
