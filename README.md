@@ -25,7 +25,7 @@ Count occurrences of unique words in a text or document, leveraging Spark's para
 ### PageRank:
 Measure the importance of web pages for search engine ranking by assigning numerical weight based on the quality and quantity of incoming links, again exploiting Spark's distributed computing.
 
-**[Google Slides on WordCount & PageRank](https://docs.google.com/presentation/d/19n0YFq1dNQsQ5LL-fQSGOzUIfEkzqi6xCx_GWUOqCMU/edit#slide=id.g2424becd044_0_261)**
+**[Google Slides on WordCount & PageRank]https://docs.google.com/presentation/d/19n0YFq1dNQsQ5LL-fQSGOzUIfEkzqi6xCx_GWUOqCMU/edit#slide=id.g2424becd044_0_261**
 
 ## Design
 
